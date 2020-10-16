@@ -1,0 +1,35 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+ipython = "*"
+pytest = "*"
+pytest-env = "*"
+flake8 = "*"
+flake8-broken-line = "*"
+flake8-builtins = "*"
+flake8-commas = "*"
+flake8-comprehensions = "*"
+flake8-mutable = "*"
+flake8-print = "*"
+flake8-cognitive-complexity = "*"
+flake8-functions = "*"
+flake8-quotes = "*"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+alembic = "*"
+markdown2 = "*"
+pydantic = "*"
+python-dotenv = "*"
+sqlalchemy = "*"
+databases = {extras = ["postgresql"], version = "*"}
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = false
