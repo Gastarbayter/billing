@@ -9,6 +9,8 @@ services:
       POSTGRES_PASSWORD: pg_password
       POSTGRES_USER: postgres
       POSTGRES_DB: billing_db
+    volumes:
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
     healthcheck:
@@ -29,4 +31,4 @@ services:
       ENVIRONMENT: local
     depends_on:
       postgres:
-          condition: service_healthy
+        condition: service_healthy

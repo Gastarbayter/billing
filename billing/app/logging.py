@@ -1,5 +1,6 @@
 import logging.config
 import os
+import typing as t
 
 from .config import settings
 
@@ -38,5 +39,5 @@ LOGGING_CONFIG = {
 }
 
 
-def init_logging():
+def init_logging() -> t.NoReturn:
     logging.config.dictConfig(LOGGING_CONFIG)

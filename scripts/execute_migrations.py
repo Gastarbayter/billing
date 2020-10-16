@@ -1,9 +1,10 @@
 import os
+import typing as t
 
 import alembic.command
 import alembic.config
 
-env = os.environ["ENVIRONMENT"].lower()
+env = os.environ['ENVIRONMENT'].lower()
 
 with open(f'config/{env}.env', 'r') as f:
     raw_config = f.readlines()
@@ -24,11 +25,11 @@ alembic_cfg.set_main_option('script_location', 'billing/db/migrations')
 alembic_cfg.set_main_option('sqlalchemy.url', DB_URL)
 
 
-def upgrade():
+def upgrade() -> t.NoReturn:
     alembic.command.upgrade(alembic_cfg, 'head')
 
 
-def downgrade():
+def downgrade() -> t.NoReturn:
     alembic.command.downgrade(alembic_cfg, 'base')
 
 

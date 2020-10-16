@@ -13,3 +13,75 @@
 docker-compose up.
 
 
+### API
+
+**Создание клиента с кошельком**
+
+Пример запроса:
+`POST v1/clients`
+```json
+{
+  "login": "Сидоров",
+  "firstName": "Петр",
+  "lastName": "Сидоров",
+  "passportSeries": "0001",
+  "passportNumber": "000001"
+}
+```
+
+Пример ответа:
+```json
+{
+  "login": "Сидоров",
+  "firstName": "Петр",
+  "lastName": "Сидоров",
+  "passportSeries": "0001",
+  "passportNumber": "000001",
+  "clientId": 1,
+  "walletId": 1
+}
+```
+**Зачисление денежных средств на кошелек клиента**
+Пример запроса:
+`POST v1/replenishment`
+```json
+{
+  "amount": 3000.55,
+  "walletId": 1
+}
+```
+
+Пример ответа:
+```json
+{
+  "amount": 3000.55,
+  "walletId": 1,
+  "transactionTypeId": 2,
+  "transactionCode": "5e5d4762-c993-4adb-abd6-6bb694deeac9",
+  "balance": 3000.55
+}
+```
+
+**Перевод денежных средств с одного кошелька на другой**
+Пример запроса:
+`POST v1/transfer`
+```json
+{
+  "amount": 1000,
+  "sourceWalletId": 1,
+  "targetWalletId": 2
+}
+```
+
+Пример ответа:
+```json
+{
+  "amount": 1000,
+  "sourceWalletId": 1,
+  "targetWalletId": 2,
+  "transactionTypeId": 1,
+  "transactionCode": "5e5d4762-c993-4adb-abd6-6bb694deeac9",
+  "sourceWalletBalance": 2000.55,
+  "targetWalletBalance": 1000
+}
+```

@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     DB_NAME: str
 
     @property
-    def DB_URL(self):
+    def DB_URL(self) -> str:
         return '{drivername}://{user}:{password}@{host}:{port}/{database}'.format(
             drivername='postgresql',
             user=self.DB_USERNAME,
