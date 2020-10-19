@@ -8,6 +8,7 @@ from billing.errors.exception import (
     DuplicateClientExceptions,
     BalanceExceptions,
     WalletNotFoundExceptions,
+    DuplicateTransactionExceptions,
 )
 from tests.raw_data import (
     clients,
@@ -85,6 +86,20 @@ async def test_create_transfer_not_valid_balance(transfer: dict, fast_client: As
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize('transfer', transfers.new_transfers)
+async def test_create_transfer_duplicate_transaction(transfer: dict, fast_client: AsyncClient):
+    with patch(
+        'billing.api.controllers.create_transfer',
+        new=CoroutineMock(side_effect=DuplicateTransactionExceptions())
+    ) as create_transfer_mock:
+        response = await fast_client.post('v1/transfer', json=transfer['request'])
+
+    assert response.status_code == 400
+    assert create_transfer_mock.called
+    assert response.json() == {'detail': None, 'message': 'This transaction already exists'}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('transfer', transfers.new_transfers)
 async def test_create_transfer_not_valid_wallet(transfer: dict, fast_client: AsyncClient):
     wallet_id = transfer['request']['sourceWalletId']
     with patch(
@@ -134,6 +149,20 @@ async def test_create_replenishment_not_valid_wallet(replenishment: dict, fast_c
     assert response.status_code == 404
     assert create_replenishment_mock.called
     assert response.json() == {'detail': None, 'message': f'Wallet id: {wallet_id} not found'}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('replenishment', replenishments.new_replenishments)
+async def test_create_replenishment_duplicate_transactions(replenishment: dict, fast_client: AsyncClient):
+    with patch(
+        'billing.api.controllers.create_replenishment',
+        new=CoroutineMock(side_effect=DuplicateTransactionExceptions())
+    ) as create_replenishment_mock:
+        response = await fast_client.post('v1/replenishment', json=replenishment['request'])
+
+    assert response.status_code == 400
+    assert create_replenishment_mock.called
+    assert response.json() == {'detail': None, 'message': 'This transaction already exists'}
 
 
 @pytest.mark.asyncio

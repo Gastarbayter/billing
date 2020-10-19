@@ -1,3 +1,4 @@
+import uuid
 from decimal import Decimal
 
 import pytest
@@ -16,6 +17,7 @@ from billing.db.engine import db
 from billing.db.models.transaction import (
     transactions_type,
     transactions_history,
+    transactions,
 )
 from billing.errors.exception import (
     BalanceExceptions,
@@ -30,6 +32,7 @@ async def get_history_by_id_from_db(history_id: int) -> dict:
         transactions_type,
         transactions_type.c.transaction_type_id == transactions_history.c.transaction_type_id
     )
+    query = query.join(transactions, transactions.c.transaction_id == transactions_history.c.transaction_id)
     query = query.select()
     query = query.where(transactions_history.c.transactions_history_id == history_id)
 
@@ -77,14 +80,20 @@ async def test_create_duplicate_login(db_connect, create_clients_with_wallet):
 @pytest.mark.asyncio
 async def test_create_replenishment(db_connect, create_clients_with_wallet):
     amount: Decimal = Decimal(3000.55)
-
-    replenishment = ReplenishmentRequests(**{"amount": amount, "walletId": create_clients_with_wallet[0]})
+    code = uuid.uuid4()
+    replenishment = ReplenishmentRequests(
+        **{
+            'transactionCode': code,
+            "amount": amount,
+            "walletId": create_clients_with_wallet[0]
+        },
+    )
     result: dict = await controllers.create_replenishment(replenishment=replenishment)
 
     result_db: dict = await get_history_by_id_from_db(history_id=result['history_id'])
 
     assert result['wallet_id'] == result_db['target_wallet_id']
-    assert result['transaction_id'] == result_db['transaction_id']
+    assert result['transaction_code'] == result_db['code'] == code
     assert result['transaction_type_id'] == result_db['transaction_type_id']
     assert result['amount'] == result_db['amount'] == amount
 
@@ -92,9 +101,10 @@ async def test_create_replenishment(db_connect, create_clients_with_wallet):
 @pytest.mark.asyncio
 async def test_create_transfer(db_connect, create_clients_with_wallet):
     amount: Decimal = Decimal(1000)
-
+    code = uuid.uuid4()
     transfer = TransferRequests(
         **{
+            'transactionCode': code,
             "amount": amount,
             "sourceWalletId": create_clients_with_wallet[0],
             "targetWalletId": create_clients_with_wallet[1]
@@ -105,6 +115,6 @@ async def test_create_transfer(db_connect, create_clients_with_wallet):
 
     assert result['source_wallet_id'] == result_db['source_wallet_id']
     assert result['target_wallet_id'] == result_db['target_wallet_id']
-    assert result['transaction_id'] == result_db['transaction_id']
+    assert result['transaction_code'] == result_db['code'] == code
     assert result['transaction_type_id'] == result_db['transaction_type_id']
     assert result['amount'] == result_db['amount'] == amount

@@ -46,7 +46,8 @@ docker-compose up.
 `POST v1/replenishment`
 ```json
 {
-  "amount": 3000.55,
+  "amount": 3000,
+  "transactionCode": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
   "walletId": 1
 }
 ```
@@ -54,11 +55,11 @@ docker-compose up.
 Пример ответа:
 ```json
 {
-  "amount": 3000.55,
+  "amount": 3000,
+  "transactionCode": "3fa85f64-5717-4562-b3fc-2c963f66afa3",
   "walletId": 1,
   "transactionTypeId": 2,
-  "transactionCode": "5e5d4762-c993-4adb-abd6-6bb694deeac9",
-  "balance": 3000.55
+  "balance": 3000
 }
 ```
 
@@ -68,6 +69,7 @@ docker-compose up.
 ```json
 {
   "amount": 1000,
+  "transactionCode": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "sourceWalletId": 1,
   "targetWalletId": 2
 }
@@ -77,11 +79,11 @@ docker-compose up.
 ```json
 {
   "amount": 1000,
+  "transactionCode": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "sourceWalletId": 1,
   "targetWalletId": 2,
   "transactionTypeId": 1,
-  "transactionCode": "5e5d4762-c993-4adb-abd6-6bb694deeac9",
-  "sourceWalletBalance": 2000.55,
+  "sourceWalletBalance": 2000,
   "targetWalletBalance": 1000
 }
 ```

@@ -1,9 +1,10 @@
-import uuid
+import typing as t
 from decimal import Decimal
 
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 
+from billing.api import serializers
 from billing.db.engine import (
     metadata,
     db,
@@ -46,28 +47,28 @@ transactions_history = sa.Table(
 class Transactions:
 
     @staticmethod
-    async def generate_transaction() -> dict:
-        code: UUID = uuid.uuid4()
-        transaction_id: int = await Transactions._insert_transaction(code=code)
-        return {
-            'transaction_id': transaction_id,
-            'transaction_code': code,
-        }
+    async def is_contains_transaction(code: UUID) -> bool:
+        query = transactions.select().where(transactions.c.code == code)
+        transaction = await db.fetch_one(query)
+
+        return transaction is not None
 
     @staticmethod
-    async def _insert_transaction(code: UUID) -> int:
-        query = transactions.insert().values(code=code)
+    async def save_transaction(code: UUID) -> int:
+        query = transactions.insert().values(code=str(code))
         transaction_id: int = await db.execute(query)
         return transaction_id
 
     @staticmethod
     async def save_history(
         target_wallet_id: int,
-        transaction_id: int,
         transaction_type_id: int,
+        code:UUID,
         amount: Decimal,
         source_wallet_id: int = None,
     ) -> int:
+        transaction_id: int = await Transactions.save_transaction(code=code)
+
         query = transactions_history.insert().values(
             source_wallet_id=source_wallet_id,
             target_wallet_id=target_wallet_id,

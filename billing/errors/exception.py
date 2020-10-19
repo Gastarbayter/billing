@@ -19,6 +19,14 @@ class DuplicateClientExceptions(BaseError):
         super().__init__(self.message, *args, **kwarg)
 
 
+class DuplicateTransactionExceptions(BaseError):
+    status_code: int = 400
+    message: str = 'This transaction already exists'
+
+    def __init__(self, *args, **kwarg):
+        super().__init__(self.message, *args, **kwarg)
+
+
 class BalanceExceptions(BaseError):
     status_code: int = 400
     message: str = 'Invalid client balance'

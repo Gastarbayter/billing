@@ -51,7 +51,7 @@ def upgrade():
         sa.Column('transaction_id', sa.BigInteger, primary_key=True, autoincrement=True, nullable=False),
         sa.Column(
             'code',
-            postgresql.UUID(),
+            sa.String(36),
             nullable=False,
             index=True,
             unique=True,

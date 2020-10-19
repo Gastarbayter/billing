@@ -2,10 +2,12 @@ new_replenishments = (
     {
         'request': {
             'amount': 3000.55,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
             'walletId': 1
         },
         'call_kwargs': {
             'amount': 3000.55,
+            'transaction_code': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
             'wallet_id': 1
         },
         'response': {
@@ -29,7 +31,8 @@ invalid_replenishments = (
     {
         'request': {
             'amount': 'test',
-            'walletId': 1
+            'walletId': 1,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -47,7 +50,9 @@ invalid_replenishments = (
     {
         'request': {
             'amount': 3000.55,
-            'wallet_id': 'test'
+            'wallet_id': 'test',
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
+
         },
         'response': {
             'detail': [
@@ -64,7 +69,8 @@ invalid_replenishments = (
     },
     {
         'request': {
-            'walletId': 1
+            'walletId': 1,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -81,7 +87,8 @@ invalid_replenishments = (
     },
     {
         'request': {
-            'amount': 3000.55
+            'amount': 3000.55,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -98,7 +105,27 @@ invalid_replenishments = (
     },
     {
         'request': {
-            'amount': 3000.55
+            'amount': 3000.55,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
+
+        },
+        'response': {
+            'detail': [
+                {
+                    'loc': [
+                        'body',
+                        'walletId'
+                    ],
+                    'msg': 'field required',
+                    'type': 'value_error.missing'
+                }
+            ]
+        }
+    },
+    {
+        'request': {
+            'amount': 3000.55,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [

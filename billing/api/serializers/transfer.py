@@ -9,6 +9,7 @@ from billing.api.serializers.common import AmountModel
 
 
 class TransferRequests(AmountModel):
+    transaction_code: UUID = Field(alias='transactionCode', title='Код транзакции')
     source_wallet_id: int = Field(
         alias='sourceWalletId',
         title='Идентифкатор кошелька с которого осуществляутся перевод',
@@ -21,7 +22,6 @@ class TransferRequests(AmountModel):
 
 class TransferResponse(TransferRequests):
     transaction_type_id: int = Field(alias='transactionTypeId', title='Идентифкатор типа транзакции')
-    transaction_code: UUID = Field(alias='transactionCode', title='Код транзакции')
     source_wallet_balance: Decimal = Field(
         alias='sourceWalletBalance',
         title='Баланс кошелька с которого осуществляутся перевод',

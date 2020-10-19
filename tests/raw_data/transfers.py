@@ -3,12 +3,14 @@ new_transfers = (
         'request': {
             'amount': 1000.55,
             'sourceWalletId': 1,
-            'targetWalletId': 2
+            'targetWalletId': 2,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'call_kwargs': {
             'amount': 1000.55,
             'source_wallet_id': 1,
-            'target_wallet_id': 2
+            'target_wallet_id': 2,
+            'transaction_code': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'amount': 1000.55,
@@ -36,7 +38,8 @@ invalid_transfers = (
         'request': {
             'amount': 'test',
             'sourceWalletId': 1,
-            'targetWalletId': 2
+            'targetWalletId': 2,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -55,7 +58,8 @@ invalid_transfers = (
         'request': {
             'amount': 1000.55,
             'sourceWalletId': 'test',
-            'targetWalletId': 2
+            'targetWalletId': 2,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -74,7 +78,8 @@ invalid_transfers = (
         'request': {
             'amount': 1000.55,
             'sourceWalletId': 1,
-            'targetWalletId': 'test'
+            'targetWalletId': 'test',
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -92,7 +97,8 @@ invalid_transfers = (
     {
         'request': {
             'sourceWalletId': 1,
-            'targetWalletId': '2'
+            'targetWalletId': '2',
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -110,7 +116,8 @@ invalid_transfers = (
     {
         'request': {
             'amount': 1000.55,
-            'targetWalletId': 2
+            'targetWalletId': 2,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -128,7 +135,8 @@ invalid_transfers = (
     {
         'request': {
             'amount': 1000.55,
-            'sourceWalletId': 1
+            'sourceWalletId': 1,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -147,7 +155,8 @@ invalid_transfers = (
         'request': {
             'amount': -200,
             'sourceWalletId': 1,
-            'targetWalletId': 2
+            'targetWalletId': 2,
+            'transactionCode': '5e5d4762-c993-4adb-abd6-6bb694deeac9',
         },
         'response': {
             'detail': [
@@ -158,6 +167,33 @@ invalid_transfers = (
                     ],
                     'msg': 'amount должен быть положительным числом',
                     'type': 'value_error'
+                }
+            ]
+        }
+    },
+    {
+        'request': {
+            'amount': -200,
+            'sourceWalletId': 1,
+            'targetWalletId': 2,
+        },
+        'response': {
+            'detail': [
+                {
+                    'loc': [
+                        'body',
+                        'amount'
+                    ],
+                    'msg': 'amount должен быть положительным числом',
+                    'type': 'value_error'
+                },
+                {
+                    'loc': [
+                        'body',
+                        'transactionCode'
+                    ],
+                    'msg': 'field required',
+                    'type': 'value_error.missing'
                 }
             ]
         }

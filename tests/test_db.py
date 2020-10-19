@@ -1,4 +1,5 @@
 from decimal import Decimal
+from uuid import UUID
 
 import pytest
 from asyncpg import (
@@ -12,6 +13,7 @@ from billing.db.models import (
     wallets,
     clients,
 )
+from billing.db.models.transaction import transactions
 from tests import raw_data
 
 
@@ -89,3 +91,18 @@ async def test_create_duplicate_passport_data_in_db(db_connect, create_clients_w
 
     assert ex.value.constraint_name == 'uniq_passport'
     assert ex.value.message == 'duplicate key value violates unique constraint "uniq_passport"'
+
+
+@pytest.mark.asyncio
+async def test_create_duplicate_transaction_code_db(db_connect):
+
+    code = UUID("3fa85f64-5717-4562-b3fc-2c963f66afa9")
+    query = transactions.insert().values(code=code)
+
+    await db.execute(query)
+
+    with pytest.raises(Exception) as ex:
+        await db.execute(query)
+
+    assert ex.value.constraint_name == 'ix_transactions_code'
+    assert ex.value.message == 'duplicate key value violates unique constraint "ix_transactions_code"'
